@@ -1,0 +1,46 @@
+<h4 class="text-center">Adatok megadása</h4>
+<form [formGroup]="myForm">
+    <div class="mb-3">
+        <label for="workplace" class="form-label">Munkavégzés helye:</label>
+        <input id="workplace" formControlName="workplace" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="date" class="form-label">Időpontja:</label>
+        <input id="date" formControlName="date" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="usedItems" class="form-label">Szerelvény típusa:</label>
+        <input id="usedItems" formControlName="usedItems" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="usedAcids" class="form-label">Felhasznált írtószer:</label>
+        <input id="usedAcids" formControlName="usedAcids" type="text" class="form-control" />
+    </div>
+    <div *ngFor="let rowData of rowDataFormGroup; let dataIdx = index" class="border border-primary my-1 p-1">
+        <div [formGroup]="rowData">
+            <h4>Sorszám {{dataIdx+1}}</h4>
+            <div class="mb-3">
+                <label for="observation1" class="form-label">Észlelés:</label>
+                <input id="observation1" formControlName="observation1" type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label for="observation2" class="form-label">Észlelés:</label>
+                <input id="observation2" formControlName="observation2" type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label for="note" class="form-label">Megjegyzés:</label>
+                <input id="note" formControlName="note" type="text" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-primary" (click)="addNewRow()">Új sor felvitele</a>
+
+
+
+    <button class="btn btn-primary mt-2 w-100" (click)="onSubmit()">Mentés</button>
+    <button class="btn btn-secondary mt-2 w-100 save-btn" routerLink="/">Vissza</button>
+</form>

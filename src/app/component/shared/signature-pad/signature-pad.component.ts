@@ -53,5 +53,6 @@ export class SignaturePadComponent implements AfterViewInit {
 
   clearPad() {
     this.signaturePad.clear();
+    this.signatureImg = '';
   }
 }

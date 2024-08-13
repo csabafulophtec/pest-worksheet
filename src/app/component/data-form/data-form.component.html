@@ -1,0 +1,41 @@
+<h4 class="text-center">Adatok megadása</h4>
+<form [formGroup]="myForm">
+    <div class="mb-3">
+        <label for="clientName" class="form-label">Megrendelő:</label>
+        <input id="clientName" formControlName="clientName" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="workplace" class="form-label">Munkavégzés helye:</label>
+        <input id="workplace" formControlName="workplace" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="date" class="form-label">Időpontja:</label>
+        <input id="date" formControlName="date" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="subject" class="form-label">Tárgya:</label>
+        <input id="subject" formControlName="subject" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="usedAcids" class="form-label">Felhasznált írtószer:</label>
+        <input id="usedAcids" formControlName="usedAcids" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="usedItems" class="form-label">Kihelyezett szerelvény:</label>
+        <input id="usedItems" formControlName="usedItems" type="text" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="other" class="form-label">Megjegyzés, munka utáni teendő:</label>
+        <input id="other" formControlName="other" type="text" class="form-control" />
+    </div>
+    <app-signature-pad name="client" title="Megrendelő (munkavégzést igazoló)" (signatureCreated)="onClientSignatureCreated($event)"></app-signature-pad>
+    <app-signature-pad name="worker" title="Munkavégző" (signatureCreated)="onWorkerSignatureCreated($event)"></app-signature-pad>
+    <button type="submit" class="btn btn-primary mt-2 w-100" (click)="onSubmit()" [disabled]="!isFormValid()">Mentés</button>
+    <button type="submit" class="btn btn-secondary mt-2 w-100 save-btn" routerLink="/">Vissza</button>
+</form>
