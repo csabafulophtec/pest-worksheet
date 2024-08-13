@@ -1,0 +1,20 @@
+<p>{{title}}</p>
+<canvas
+  #canvas
+  (touchstart)="startDrawing($event)"
+  (touchmove)="moved($event)"
+  width="340"
+  height="200"
+  class="signature-pad"
+  id="signature-pad-canvas"
+></canvas>
+<p class="error-message" *ngIf="signatureNeeded">Signature is required</p>
+
+<div class="buttons flex justify-between">
+  <button class="btn btn-danger" (click)="clearPad()" *ngIf="signatureImg">Törlés</button>
+  <button class="btn btn-secondary" (click)="savePad()" *ngIf="!signatureImg">Aláírás hozzáadása "{{title}}"</button>
+</div>
+
+<div *ngIf="signatureNeeded === false && signatureImg">
+  <img src="{{ signatureImg }}" alt="signatre-img"/>
+</div>
