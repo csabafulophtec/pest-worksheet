@@ -21,6 +21,7 @@ export class AddCustomerComponent implements OnDestroy {
   customerService = inject(CustomerService);
   sub?: Subscription;
   router = inject(Router);
+  success = false;
 
   customerForm = new FormGroup({
     name: new FormControl(''),
@@ -34,7 +35,12 @@ export class AddCustomerComponent implements OnDestroy {
         name: customerFormValue.name ?? '',
         address: customerFormValue.address ?? '',
       })
-      .subscribe();
+      .subscribe((resp) => {
+        this.success = true;
+        setTimeout(() => {
+          this.router.navigate([`/customers`]);
+        }, 2000);
+      });
   }
 
   ngOnDestroy(): void {

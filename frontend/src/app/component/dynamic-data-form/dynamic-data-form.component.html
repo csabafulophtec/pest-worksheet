@@ -40,5 +40,8 @@
     <a class="btn btn-primary" (click)="addNewRow()">Új sor felvitele</a>
     
     <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()">Vissza</button>
-    <button class="btn btn-primary mt-2 w-100" (click)="onSubmit()">Mentés</button>
+    <div class="alert alert-primary my-2" role="alert" *ngIf="success">
+        Sikeres rögzítés!
+    </div>
+    <button class="btn btn-primary w-100" (click)="onSubmit()">Mentés</button>
 </form>

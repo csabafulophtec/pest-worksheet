@@ -13,5 +13,8 @@
 
         <button class="btn btn-secondary w-100" (click)="navigateBack()">Vissza</button>
         <button type="submit" class="btn btn-primary w-100 mt-2">Mentés</button>
+        <div class="alert alert-primary" role="alert" *ngIf="success">
+            Sikeres partnerfelvitel!
+        </div>
     </form>
 </div>

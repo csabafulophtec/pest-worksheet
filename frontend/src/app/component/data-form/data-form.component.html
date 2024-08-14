@@ -37,5 +37,8 @@
     <app-signature-pad name="client" title="Megrendelő (munkavégzést igazoló)" (signatureCreated)="onClientSignatureCreated($event)"></app-signature-pad>
     <app-signature-pad name="worker" title="Munkavégző" (signatureCreated)="onWorkerSignatureCreated($event)"></app-signature-pad>
     <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()">Vissza</button>
-    <button type="submit" class="btn btn-primary mt-2 w-100 back-btn" (click)="onSubmit()" [disabled]="!isFormValid()">Mentés</button>
+    <div class="alert alert-primary my-2" role="alert" *ngIf="success">
+        Sikeres Munkalap Felvitel!
+    </div>
+    <button type="submit" class="btn btn-primary w-100 back-btn" (click)="onSubmit()" [disabled]="!isFormValid()">Mentés</button>
 </form>

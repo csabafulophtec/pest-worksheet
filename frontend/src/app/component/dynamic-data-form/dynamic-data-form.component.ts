@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
@@ -30,7 +30,7 @@ type DynamicDataFormGroup = FormGroup<{
 @Component({
   selector: 'app-dynamic-data-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, RouterModule, NgFor],
+  imports: [FormsModule, ReactiveFormsModule, RouterModule, CommonModule],
   templateUrl: './dynamic-data-form.component.html',
   styleUrl: './dynamic-data-form.component.scss',
 })
@@ -38,20 +38,27 @@ export class DynamicDataFormComponent implements OnInit, OnDestroy {
   id: string = '';
   activatedRouterSub?: Subscription;
   route = inject(ActivatedRoute);
-  myForm: DynamicDataFormGroup = new FormGroup({
-    workplace: new FormControl(''),
-    date: new FormControl(''),
-    usedAcids: new FormControl(''),
-    usedItems: new FormControl(''),
-    rowData: new FormArray<DynamicDataRow>([]),
-  });
+  myForm!: DynamicDataFormGroup;
   customerService = inject(CustomerService);
   sub?: Subscription;
+  customerSub?: Subscription;
   router = inject(Router);
+  success = false;
 
   ngOnInit(): void {
     this.activatedRouterSub = this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
+      this.customerSub = this.customerService
+        .getCustomerById(this.id)
+        .subscribe((resp) => {
+          this.myForm = new FormGroup({
+            workplace: new FormControl(resp.address),
+            date: new FormControl(''),
+            usedAcids: new FormControl(''),
+            usedItems: new FormControl(''),
+            rowData: new FormArray<DynamicDataRow>([]),
+          });
+        });
     });
   }
 
@@ -84,7 +91,6 @@ export class DynamicDataFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('Form Data:', this.myForm.value);
     this.generatePDF();
   }
 
@@ -130,11 +136,13 @@ export class DynamicDataFormComponent implements OnInit, OnDestroy {
       fileName: `kartevo-ellenorzesi-tablazat-${this.getCurrentFormattedDate()}.pdf`,
       docBase64String,
     };
-    console.log(payload);
     this.sub = this.customerService
       .savePdfToCustomer(this.id, payload)
       .subscribe((resp) => {
-        console.log(resp);
+        this.success = true;
+        setTimeout(() => {
+          this.router.navigate([`/customers/${this.id}`]);
+        }, 2000);
       });
     //doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
   }

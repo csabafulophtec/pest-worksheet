@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -15,6 +16,7 @@ import { SignaturePadComponent } from '../shared/signature-pad/signature-pad.com
   selector: 'app-data-form',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     SignaturePadComponent,
@@ -32,30 +34,36 @@ export class DataFormComponent implements OnInit, OnDestroy {
   activatedRouterSub?: Subscription;
   id: string = '';
   sub?: Subscription;
+  customerSub?: Subscription;
   router = inject(Router);
+  success = false;
 
   ngOnInit(): void {
-    this.myForm = new FormGroup({
-      clientName: new FormControl(''),
-      workplace: new FormControl(''),
-      date: new FormControl(''),
-      subject: new FormControl(''),
-      usedAcids: new FormControl(''),
-      usedItems: new FormControl(''),
-      other: new FormControl(''),
-    });
     this.activatedRouterSub = this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
+      this.customerSub = this.customerService
+        .getCustomerById(this.id)
+        .subscribe((resp) => {
+          this.myForm = new FormGroup({
+            clientName: new FormControl(resp.name),
+            workplace: new FormControl(resp.address),
+            date: new FormControl(''),
+            subject: new FormControl(''),
+            usedAcids: new FormControl(''),
+            usedItems: new FormControl(''),
+            other: new FormControl(''),
+          });
+        });
     });
   }
 
   ngOnDestroy(): void {
     this.activatedRouterSub?.unsubscribe();
     this.sub?.unsubscribe();
+    this.customerSub?.unsubscribe();
   }
 
   onSubmit(): void {
-    console.log('Form Data:', this.myForm.value);
     this.generatePDF();
   }
 
@@ -102,7 +110,10 @@ export class DataFormComponent implements OnInit, OnDestroy {
     this.sub = this.customerService
       .savePdfToCustomer(this.id, payload)
       .subscribe((resp) => {
-        console.log(resp);
+        this.success = true;
+        setTimeout(() => {
+          this.router.navigate([`/customers/${this.id}`]);
+        }, 2000);
       });
 
     //doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
@@ -132,7 +143,6 @@ export class DataFormComponent implements OnInit, OnDestroy {
   isFormValid() {
     const isFormValid =
       this.workerSignature?.length > 0 && this.clientSignature?.length > 0;
-    console.log(isFormValid);
     return isFormValid;
   }
 

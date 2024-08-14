@@ -32,19 +32,18 @@ export class SignaturePadComponent implements AfterViewInit {
 
   startDrawing(event: Event) {
     // works in device not in browser
-    console.log('startDrawing');
+    //console.log('startDrawing');
   }
 
   moved(event: Event) {
     // works in device not in browser
-    console.log('moved');
+    //console.log('moved');
   }
 
   savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureCreated.emit(base64Data);
     this.signatureImg = base64Data;
-    console.log(this.signatureImg);
     this.signatureNeeded = this.signaturePad.isEmpty();
     if (!this.signatureNeeded) {
       this.signatureNeeded = false;

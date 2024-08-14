@@ -27,7 +27,6 @@ export class CustomerService {
     id: string,
     payload: { fileName: string; docBase64String: string }
   ) {
-    console.log(payload);
     return this.http.post(this.API_URL + `customers/${id}/files`, payload);
   }
 

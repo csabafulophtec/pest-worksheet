@@ -97,6 +97,8 @@ export class ListCustomerComponent implements OnInit, OnDestroy {
   }
 
   onItemSelected(evt: any) {
-    console.log(evt);
+    this.customers = this.customers.filter((f) =>
+      f.name.toLowerCase().includes(evt.item.toLowerCase())
+    );
   }
 }

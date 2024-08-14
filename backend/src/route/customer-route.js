@@ -10,9 +10,7 @@ const DocumentFile = require("../model/document-file");
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log("PATTTHHTTHTHTHH");
     const pathToSave = "uploads/";
-    console.log(pathToSave);
     cb(null, pathToSave);
   },
   filename: function (req, file, cb) {
@@ -39,7 +37,6 @@ router.get("/customers", async (req, res) => {
     const customers = await Customer.find();
     res.send(customers);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 });
@@ -119,7 +116,6 @@ router.post("/customers/:id/files", upload.single("file"), async (req, res) => {
       `data:application/pdf;filename=${fileName};base64,`,
       ""
     );
-    console.log(base64Data.substring(0, 80));
     const filePath = path.join(__dirname, "../../uploads", fileName);
     fs.writeFileSync(filePath, base64Data, "base64");
 
@@ -131,12 +127,9 @@ router.post("/customers/:id/files", upload.single("file"), async (req, res) => {
       uploadDate: new Date(),
     });
 
-    console.log(file);
-
     await file.save();
     res.send({ message: "File uploaded successfully", file });
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 });
@@ -152,7 +145,6 @@ router.get("/customers/:id/files", async (req, res) => {
     }
     res.send(files);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 });
