@@ -1,0 +1,17 @@
+<div class="container mt-4">
+    <h4 class="text-center">Partner felvitele</h4>
+    <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+            <label for="name" class="form-label">Név:</label>
+            <input id="name" formControlName="name" type="text" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Cím:</label>
+            <input id="address" formControlName="address" type="text" class="form-control" />
+        </div>
+
+        <button class="btn btn-secondary w-100" (click)="navigateBack()">Vissza</button>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Mentés</button>
+    </form>
+</div>

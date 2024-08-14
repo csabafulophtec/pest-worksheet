@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import jsPDF from 'jspdf';
+import { Subscription } from 'rxjs';
+import { CustomerService } from '../../service/customer.service';
 import { SignaturePadComponent } from '../shared/signature-pad/signature-pad.component';
 
 @Component({
@@ -21,10 +23,16 @@ import { SignaturePadComponent } from '../shared/signature-pad/signature-pad.com
   templateUrl: './data-form.component.html',
   styleUrl: './data-form.component.scss',
 })
-export class DataFormComponent {
+export class DataFormComponent implements OnInit, OnDestroy {
+  route = inject(ActivatedRoute);
+  customerService = inject(CustomerService);
   myForm!: FormGroup;
   clientSignature: string = '';
   workerSignature: string = '';
+  activatedRouterSub?: Subscription;
+  id: string = '';
+  sub?: Subscription;
+  router = inject(Router);
 
   ngOnInit(): void {
     this.myForm = new FormGroup({
@@ -36,6 +44,14 @@ export class DataFormComponent {
       usedItems: new FormControl(''),
       other: new FormControl(''),
     });
+    this.activatedRouterSub = this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.activatedRouterSub?.unsubscribe();
+    this.sub?.unsubscribe();
   }
 
   onSubmit(): void {
@@ -75,7 +91,21 @@ export class DataFormComponent {
 
     doc.addImage(this.workerSignature, 145, 250, 50, 18);
     doc.text('Munkavégző', 170, 280, { align: 'center' });
-    doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
+
+    const docBase64String = doc.output('datauristring', {
+      filename: `munkalap-${this.getCurrentFormattedDate()}.pdf`,
+    });
+    const payload = {
+      fileName: `munkalap-${this.getCurrentFormattedDate()}.pdf`,
+      docBase64String,
+    };
+    this.sub = this.customerService
+      .savePdfToCustomer(this.id, payload)
+      .subscribe((resp) => {
+        console.log(resp);
+      });
+
+    //doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
   }
 
   onClientSignatureCreated(base64Data: string) {
@@ -104,5 +134,9 @@ export class DataFormComponent {
       this.workerSignature?.length > 0 && this.clientSignature?.length > 0;
     console.log(isFormValid);
     return isFormValid;
+  }
+
+  navigateBack() {
+    this.router.navigate([`/customers/${this.id}`]);
   }
 }

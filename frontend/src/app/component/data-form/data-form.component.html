@@ -36,6 +36,6 @@
     </div>
     <app-signature-pad name="client" title="Megrendelő (munkavégzést igazoló)" (signatureCreated)="onClientSignatureCreated($event)"></app-signature-pad>
     <app-signature-pad name="worker" title="Munkavégző" (signatureCreated)="onWorkerSignatureCreated($event)"></app-signature-pad>
-    <button type="submit" class="btn btn-primary mt-2 w-100" (click)="onSubmit()" [disabled]="!isFormValid()">Mentés</button>
-    <button type="submit" class="btn btn-secondary mt-2 w-100 save-btn" routerLink="/">Vissza</button>
+    <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()">Vissza</button>
+    <button type="submit" class="btn btn-primary mt-2 w-100 back-btn" (click)="onSubmit()" [disabled]="!isFormValid()">Mentés</button>
 </form>

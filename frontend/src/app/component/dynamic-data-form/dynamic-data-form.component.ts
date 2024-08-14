@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -7,9 +7,11 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Subscription } from 'rxjs';
+import { CustomerService } from '../../service/customer.service';
 
 type DynamicDataRow = FormGroup<{
   observation1: FormControl<string | null>;
@@ -32,7 +34,10 @@ type DynamicDataFormGroup = FormGroup<{
   templateUrl: './dynamic-data-form.component.html',
   styleUrl: './dynamic-data-form.component.scss',
 })
-export class DynamicDataFormComponent {
+export class DynamicDataFormComponent implements OnInit, OnDestroy {
+  id: string = '';
+  activatedRouterSub?: Subscription;
+  route = inject(ActivatedRoute);
   myForm: DynamicDataFormGroup = new FormGroup({
     workplace: new FormControl(''),
     date: new FormControl(''),
@@ -40,6 +45,20 @@ export class DynamicDataFormComponent {
     usedItems: new FormControl(''),
     rowData: new FormArray<DynamicDataRow>([]),
   });
+  customerService = inject(CustomerService);
+  sub?: Subscription;
+  router = inject(Router);
+
+  ngOnInit(): void {
+    this.activatedRouterSub = this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.activatedRouterSub?.unsubscribe();
+    this.sub?.unsubscribe();
+  }
 
   addNewRow() {
     this.myForm.controls.rowData.push(this.generateRowData());
@@ -104,7 +123,20 @@ export class DynamicDataFormComponent {
       showHead: 'firstPage',
       theme: 'grid',
     });
-    doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
+    const docBase64String = doc.output('datauristring', {
+      filename: `kartevo-ellenorzesi-tablazat-${this.getCurrentFormattedDate()}.pdf`,
+    });
+    const payload = {
+      fileName: `kartevo-ellenorzesi-tablazat-${this.getCurrentFormattedDate()}.pdf`,
+      docBase64String,
+    };
+    console.log(payload);
+    this.sub = this.customerService
+      .savePdfToCustomer(this.id, payload)
+      .subscribe((resp) => {
+        console.log(resp);
+      });
+    //doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
   }
 
   getTableBody() {
@@ -127,5 +159,9 @@ export class DynamicDataFormComponent {
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
     return `${year}-${month}-${day}-${hours}-${minutes}-${seconds}`;
+  }
+
+  navigateBack() {
+    this.router.navigate([`/customers/${this.id}`]);
   }
 }
