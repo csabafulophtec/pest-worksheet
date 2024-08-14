@@ -6,25 +6,26 @@
     <div class="row">
         <a class="btn btn-secondary w-100 mt-2" routerLink="/add-customer">Partner felvitele</a>
     </div>
-    <div class="my-3">
+    <div class="row my-3">
         <input id="typeahead-basic" type="text" class="form-control" placeholder="Keresés..." [(ngModel)]="model"
-            [ngbTypeahead]="search" (selectItem)="onItemSelected($event)"/>
+            [ngbTypeahead]="search" (selectItem)="onItemSelected($event)" />
     </div>
-
-    <table class="table table-success table-striped">
-        <thead>
-            <tr>
-                <th>Név</th>
-                <th>Cím</th>
-                <th>Művelet</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let customer of customers">
-                <td>{{ customer.name }}</td>
-                <td>{{ customer.address }}</td>
-                <td><a class="btn btn-primary" [routerLink]="[customer._id]">Részletek</a></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <table class="table table-success table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Cím</th>
+                    <th>Művelet</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers">
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.address }}</td>
+                    <td><a class="btn btn-primary" [routerLink]="[customer._id]">Részletek</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
