@@ -102,6 +102,7 @@ export class DynamicDataFormComponent {
       body: this.getTableBody(),
       startY: 75,
       showHead: 'firstPage',
+      theme: 'grid',
     });
     doc.save(`munkalap-${this.getCurrentFormattedDate()}-.pdf`);
   }
