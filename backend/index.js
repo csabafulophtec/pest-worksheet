@@ -4,6 +4,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const customerRoutes = require("./src/route/customer-route");
+const documentFileRoutes = require("./src/route/document-file-router");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 
 // Use the customer routes
 app.use(customerRoutes);
+app.use(documentFileRoutes);
 
 // Connect to MongoDB and start the server
 const startServer = async () => {

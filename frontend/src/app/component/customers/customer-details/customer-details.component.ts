@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Customer } from '../../../model/customer';
 import { DocumentFile } from '../../../model/document-file';
 import { CustomerService } from '../../../service/customer.service';
+import { DocumentFileService } from '../../../service/document-file.service';
 
 @Component({
   selector: 'app-customer-details',
@@ -15,12 +16,14 @@ import { CustomerService } from '../../../service/customer.service';
 })
 export class CustomerDetailsComponent implements OnInit, OnDestroy {
   customerService = inject(CustomerService);
+  documentFileService = inject(DocumentFileService);
   route = inject(ActivatedRoute);
   activatedRouterSub?: Subscription;
   sub?: Subscription;
   customer?: Customer;
   router = inject(Router);
   documentsSub?: Subscription;
+  documentFileSub?: Subscription;
   documentFiles: DocumentFile[] = [];
   id: string = '';
 
@@ -43,6 +46,7 @@ export class CustomerDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
     this.activatedRouterSub?.unsubscribe();
+    this.documentFileSub?.unsubscribe();
   }
 
   goToWorksheet(id?: string) {
@@ -54,10 +58,18 @@ export class CustomerDetailsComponent implements OnInit, OnDestroy {
   }
 
   viewPdf(fileName: string) {
-    const pdfUrl = `http://localhost:3000/uploads/${fileName}`;
+    //const pdfUrl = `http://localhost:3000/uploads/${fileName}`;
 
     // Open the PDF in a new window
-    window.open(pdfUrl, '_blank');
+    //window.open(pdfUrl, '_blank');
+
+    this.documentFileSub = this.documentFileService
+      .getFileByFileName(fileName)
+      .subscribe((resp) => {
+        const url = window.URL.createObjectURL(resp);
+        window.open(url, '_blank');
+        window.URL.revokeObjectURL(url); // Clean up URL object after opening
+      });
   }
 
   navigateBack() {
