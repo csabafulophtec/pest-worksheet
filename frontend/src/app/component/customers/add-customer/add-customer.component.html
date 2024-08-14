@@ -11,8 +11,8 @@
             <input id="address" formControlName="address" type="text" class="form-control" />
         </div>
 
-        <button class="btn btn-secondary w-100" (click)="navigateBack()">Vissza</button>
-        <button type="submit" class="btn btn-primary w-100 mt-2">Mentés</button>
+        <button class="btn btn-secondary w-100" (click)="navigateBack()"><i class="bi bi-arrow-left-square"></i><span> Vissza</span></button>
+        <button type="submit" class="btn btn-primary w-100 mt-2"><i class="bi bi-floppy"></i><span> Mentés</span></button>
         <div class="alert alert-primary" role="alert" *ngIf="success">
             Sikeres partnerfelvitel!
         </div>

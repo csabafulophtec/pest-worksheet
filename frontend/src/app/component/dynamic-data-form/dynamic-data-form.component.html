@@ -37,13 +37,13 @@
         </div>
     </div>
 
-    <a class="btn btn-primary" (click)="addNewRow()">Új sor felvitele</a>
+    <a class="btn btn-primary" (click)="addNewRow()"><i class="bi bi-plus-square"></i><span> Új sor felvitele</span></a>
     
-    <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()">Vissza</button>
+    <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()"><i class="bi bi-arrow-left-square"></i><span> Vissza</span></button>
     <div class="my-2">
         <div class="alert alert-primary" role="alert" *ngIf="success">
             Sikeres rögzítés!
         </div>
     </div>
-    <button class="btn btn-primary w-100" (click)="onSubmit()">Mentés</button>
+    <button class="btn btn-primary w-100" (click)="onSubmit()"><i class="bi bi-floppy"></i><span> Mentés</span></button>
 </form>

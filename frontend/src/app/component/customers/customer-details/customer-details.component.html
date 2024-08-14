@@ -1,21 +1,21 @@
 <div class="container">
     <div class="row">
-        <a class="btn btn-secondary" (click)="navigateBack()">Vissza</a>
-        <a class="btn btn-primary my-2" (click)="goToWorksheet(customer?._id)">Munkalap</a>
-        <a class="btn btn-primary" (click)="goToTable(customer?._id)">Kártevő-ellenőrzési táblázat</a>
+        <a class="btn btn-secondary" (click)="navigateBack()"><i class="bi bi-arrow-left-square"></i><span> Vissza</span></a>
+        <a class="btn btn-primary my-2" (click)="goToWorksheet(customer?._id)"><i class="bi bi-file-earmark-ruled"></i><span> Munkalap felvitele</span></a>
+        <a class="btn btn-primary" (click)="goToTable(customer?._id)"><i class="bi bi-file-earmark-spreadsheet"></i><span> Kártevő-ellenőrzési táblázat készítése</span></a>
     </div>
     <div class="row mt-3">
         <h3>
-            Név: {{customer?.name}}
+            <i class="bi bi-person-circle"></i><span> Név: {{customer?.name}}</span>
         </h3>
     </div>
-    <div class="row">
+    <div class="row mt-1">
         <h3>
-            Cím: {{customer?.address}}
+            <i class="bi bi-geo-fill"></i><span> Cím: {{customer?.address}}</span>
         </h3>
     </div>
     <div class="row mt-2">
-        <h4>Dokumentumok</h4>
+        <h4><i class="bi bi-file-earmark-richtext"></i><span> Dokumentumok</span></h4>
         <table class="table table-success table-striped table-hover">
             <thead>
                 <tr>
@@ -26,7 +26,7 @@
             <tbody>
                 <tr *ngFor="let documentFile of documentFiles">
                     <td>{{ documentFile.filename }}</td>
-                    <td><a class="btn btn-primary" [routerLink]="[documentFile._id]" (click)="viewPdf(documentFile.filename)">Megtekint</a></td>
+                    <td><a class="btn btn-primary" [routerLink]="[documentFile._id]" (click)="viewPdf(documentFile.filename)"><i class="bi bi-eye"></i><span> Megtekint</span></a></td>
                 </tr>
             </tbody>
         </table>

@@ -36,11 +36,11 @@
     </div>
     <app-signature-pad name="client" title="Megrendelő (munkavégzést igazoló)" (signatureCreated)="onClientSignatureCreated($event)"></app-signature-pad>
     <app-signature-pad name="worker" title="Munkavégző" (signatureCreated)="onWorkerSignatureCreated($event)"></app-signature-pad>
-    <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()">Vissza</button>
+    <button class="btn btn-secondary mt-2 w-100 save-btn" (click)="navigateBack()"><i class="bi bi-arrow-left-square"></i><span> Vissza</span></button>
     <div class="my-2">
         <div class="alert alert-primary" role="alert" *ngIf="success">
             Sikeres Munkalap Felvitel!
         </div>
     </div>
-    <button type="submit" class="btn btn-primary w-100 back-btn" (click)="onSubmit()" [disabled]="!isFormValid()">Mentés</button>
+    <button type="submit" class="btn btn-primary w-100 back-btn" (click)="onSubmit()" [disabled]="!isFormValid()"><i class="bi bi-floppy"></i><span> Mentés</span></button>
 </form>
